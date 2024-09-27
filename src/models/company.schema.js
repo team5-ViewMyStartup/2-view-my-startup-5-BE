@@ -34,26 +34,6 @@ export const companySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    investments: [
-      {
-        investorName: {
-          type: String,
-          required: true,
-        },
-        amount: {
-          type: Number,
-          required: true,
-        },
-        comment: {
-          type: String,
-          required: true,
-        },
-        password: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
   },
   { collection: "company" },
 );
