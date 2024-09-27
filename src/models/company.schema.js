@@ -7,7 +7,7 @@ export const companySchema = new mongoose.Schema(
       required: true,
     },
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
     description: {
