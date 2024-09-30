@@ -25,7 +25,7 @@ function asyncErrorHandler(handler) {
 
 // 기업 상세 조회 api
 companiesRouter.get(
-  "/companies/:id",
+  "/:id",
   asyncErrorHandler(async (req, res) => {
     return res.send({
       name: company.getId(),
