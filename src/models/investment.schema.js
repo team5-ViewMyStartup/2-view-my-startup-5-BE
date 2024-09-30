@@ -14,14 +14,17 @@ export const investmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    password: {
+    id: {
       type: String,
       required: true,
     },
-    id: {
-      type: String,
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },
   { collection: "investment" },
 );
+
+const Investment = mongoose.model("Investment", investmentSchema);
+export default Investment;

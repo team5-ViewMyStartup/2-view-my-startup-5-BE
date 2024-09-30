@@ -1,11 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
 import { companySchema } from "../models/company.schema.js";
+import { investmentsRouter } from "./investments.js";
+import { ValidationError, NotFoundError, InternalServerError } from "../error.js";
 
-const comoanyModel = mongoose.model("company", companySchema);
+const companyModel = mongoose.model("company", companySchema);
 export const companiesRouter = express.Router();
 
-function asyncHandler(handler) {
+companiesRouter.use("/:companyId/investments", investmentsRouter); //investment api를 위한 부모 라우터
+
+function asyncErrorHandler(handler) {
   return async (req, res, next) => {
     try {
       await handler(req, res, next);

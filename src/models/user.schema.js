@@ -1,4 +1,4 @@
-import mongoose, { Collection } from "mongoose";
+import mongoose from "mongoose";
 
 export const userSchema = new mongoose.Schema(
   {
@@ -14,6 +14,13 @@ export const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    id: {
+      type: String,
+      required: true,
+    },
   },
   { collection: "user" },
 );
+
+const User = mongoose.model("User", userSchema);
+export default User;
