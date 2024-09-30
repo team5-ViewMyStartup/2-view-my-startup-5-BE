@@ -34,6 +34,10 @@ export const companySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    selectCount: {
+      type: Number,
+      required: true,
+    },
   },
   { collection: "company" },
 );
