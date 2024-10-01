@@ -18,7 +18,7 @@ mongoose.connection.on("reconnected", () => console.log("reconnected"));
 mongoose.connection.on("disconnecting", () => console.log("disconnecting"));
 mongoose.connection.on("close", () => console.log("close"));
 
-// app.use(express.json());
+app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
 app.listen(3000, () => console.log("Server Started"));

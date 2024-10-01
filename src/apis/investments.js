@@ -8,7 +8,7 @@ export const investmentsRouter = express.Router();
 investmentsRouter.get(
   "/:companyId",
   asyncHandler(async (req, res) => {
-    res.send({ message: "test" });
+    // res.send({ message: "test" });
     const { companyId } = req.params;
 
     const investments = await Investment.where({ companyId }).select({
