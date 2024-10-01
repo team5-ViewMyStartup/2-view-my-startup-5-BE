@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import { companySchema } from "../models/company.schema.js";
-import { investmentsRouter } from "./investments.js";
 import { ValidationError, NotFoundError, InternalServerError } from "../error.js";
 
 const companyModel = mongoose.model("company", companySchema);
@@ -25,6 +24,8 @@ function asyncErrorHandler(handler) {
 companiesRouter.get(
   "/:id",
   asyncErrorHandler(async (req, res) => {
+    const company = await companyModel.findById(req.params.id);
+
     return res.send({
       name: company.getId(),
       id: company.getName(),

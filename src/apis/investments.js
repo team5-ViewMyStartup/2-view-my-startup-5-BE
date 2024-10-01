@@ -1,16 +1,17 @@
 import express from "express";
 import { NotFoundError } from "../error.js";
 import Investment from "../models/investment.schema.js";
-import { asyncHandler } from "../../utils/aysnc-handler.js";
+import { asyncHandler } from "../../utils/async-handler.js";
 
 export const investmentsRouter = express.Router();
 
 investmentsRouter.get(
   "/:companyId",
   asyncHandler(async (req, res) => {
+    res.send({ message: "test" });
     const { companyId } = req.params;
 
-    const investments = await Investment.where({ companyId: companyId }).select({
+    const investments = await Investment.where({ companyId }).select({
       investorName: 1,
       amount: 1,
       comment: 1,
@@ -19,7 +20,7 @@ investmentsRouter.get(
     if (!investments?.length) {
       throw new NotFoundError("기업에 투자한 정보가 없습니다.");
     }
-    return investments;
+    res.json(investments);
   }),
 );
 
