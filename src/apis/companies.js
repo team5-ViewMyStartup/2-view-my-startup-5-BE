@@ -1,9 +1,7 @@
 import express from "express";
-import mongoose from "mongoose";
-import { companySchema } from "../models/company.schema.js";
-import { ValidationError, NotFoundError, InternalServerError } from "../error.js";
+import Company from "../models/company.schema.js";
+import { ValidationError, NotFoundError, InternalServerError } from "../error/error.js";
 
-const companyModel = mongoose.model("company", companySchema);
 export const companiesRouter = express.Router();
 
 function asyncErrorHandler(handler) {
@@ -12,7 +10,6 @@ function asyncErrorHandler(handler) {
       await handler(req, res, next);
     } catch (e) {
       if (!(e instanceof ValidationError) && !(e instanceof NotFoundError)) {
-        // 400 404 아닌 경우 500으로 취급
         e = new InternalServerError(e.message);
       }
       next(e);
@@ -24,17 +21,23 @@ function asyncErrorHandler(handler) {
 companiesRouter.get(
   "/:id",
   asyncErrorHandler(async (req, res) => {
-    const company = await companyModel.findById(req.params.id);
+    const companyId = req.params.id;
+
+    const company = await Company.findOne({ id: companyId });
+
+    if (!company) {
+      throw new NotFoundError("회사를 찾을 수 없습니다.");
+    }
 
     return res.send({
-      name: company.getId(),
-      id: company.getName(),
-      description: company.getDescription(),
-      category: company.getPrice(),
-      totalInvestment: company.getTags(),
-      revenue: company.getImages(),
-      employees: company.getCreatedAt(),
-      image: company.getUpdatedAt(),
+      image: company.image,
+      name: company.name,
+      id: company.id,
+      description: company.description,
+      category: company.category,
+      totalInvestment: company.totalInvestment,
+      revenue: company.revenue,
+      employees: company.employees,
     });
   }),
 );
