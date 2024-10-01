@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-
 import { companiesRouter } from "./apis/companies.js";
 import { investmentsRouter } from "./apis/investments.js";
 
