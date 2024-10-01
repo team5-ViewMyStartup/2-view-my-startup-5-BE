@@ -7,8 +7,6 @@ import { ValidationError, NotFoundError, InternalServerError } from "../error.js
 const companyModel = mongoose.model("company", companySchema);
 export const companiesRouter = express.Router();
 
-companiesRouter.use("/:companyId/investments", investmentsRouter); //investment api를 위한 부모 라우터
-
 function asyncErrorHandler(handler) {
   return async (req, res, next) => {
     try {

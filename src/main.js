@@ -16,6 +16,7 @@ mongoose.connection.on("disconnected", () => console.log("disconnected"));
 mongoose.connection.on("reconnected", () => console.log("reconnected"));
 mongoose.connection.on("disconnecting", () => console.log("disconnecting"));
 mongoose.connection.on("close", () => console.log("close"));
-app.listen(3000, () => console.log("Server Started"));
 
 app.use("/companies/:id", companiesRouter);
+app.use("/investments");
+app.listen(3000, () => console.log("Server Started"));

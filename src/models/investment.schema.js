@@ -14,10 +14,6 @@ export const investmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    id: {
-      type: String,
-      required: true,
-    },
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
