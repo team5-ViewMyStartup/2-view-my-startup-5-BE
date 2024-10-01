@@ -6,10 +6,6 @@ export const companySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    id: {
-      type: String,
-      required: true,
-    },
     description: {
       type: String,
       required: true,
@@ -34,6 +30,17 @@ export const companySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    selectMyCount: {
+      type: Number,
+      required: true,
+    },
+    selectOtherCount: {
+      type: Number,
+      required: true,
+    },
   },
   { collection: "company" },
 );
+
+const Company = mongoose.model("Company", companySchema);
+export default Company;
