@@ -20,6 +20,41 @@ function asyncErrorHandler(handler) {
   };
 }
 
+// 기업 전체 리스트 api (메인 페이지)
+function getSortOption(query) {
+  const sortOption = {};
+
+  switch (query) {
+    case "totalInvestment":
+      sortOption.totalInvestment = "desc";
+      sortOption.revenue = "asc";
+      sortOption.employees = "asc";
+      break;
+
+    case "revenue":
+      sortOption.revenue = "desc";
+      sortOption.totalInvestment = "asc";
+      sortOption.employees = "asc";
+      break;
+
+    default:
+      sortOption.employees = "desc";
+      sortOption.totalInvestment = "asc";
+      sortOption.revenue = "asc";
+  }
+
+  return sortOption;
+}
+
+companiesRouter.get("/", async (req, res) => {
+  const sort = req.query.sort;
+  const sortOption = getSortOption(sort);
+
+  const companyList = await companyModel.find().sort(sortOption);
+
+  res.send(companyList);
+});
+
 // 기업 상세 조회 api
 companiesRouter.get(
   "/:id",
