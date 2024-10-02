@@ -4,7 +4,18 @@ import { asyncHandler } from "../../utils/async-handler.js";
 
 export const companiesRouter = express.Router();
 
-// 기업 상세 조회 api
+// 기업 전체리스트 (메인페이지) API
+
+companiesRouter.get(
+  "/",
+  asyncHandler(async (req, res) => {
+    const companyList = await Company.find();
+
+    res.json(companyList);
+  }),
+);
+
+// 기업 상세 조회 APT
 companiesRouter.get(
   "/:id",
   asyncHandler(async (req, res) => {

@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { companiesRouter } from "./apis/companies.js";
 import { investmentsRouter } from "./apis/investments.js";
+import { signUpRouter } from "./apis/signup.js";
 
 const app = express();
 
@@ -17,7 +18,8 @@ mongoose.connection.on("reconnected", () => console.log("reconnected"));
 mongoose.connection.on("disconnecting", () => console.log("disconnecting"));
 mongoose.connection.on("close", () => console.log("close"));
 
-// app.use(express.json());
+app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
+app.use("/signup", signUpRouter);
 app.listen(3000, () => console.log("Server Started"));
