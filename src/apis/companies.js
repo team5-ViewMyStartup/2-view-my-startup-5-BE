@@ -29,7 +29,7 @@ companiesRouter.get(
       throw new NotFoundError("회사를 찾을 수 없습니다.");
     }
 
-    return res.send({
+    return res.json({
       image: company.image,
       name: company.name,
       id: company.id,
