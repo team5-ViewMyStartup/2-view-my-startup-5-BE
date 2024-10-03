@@ -46,13 +46,28 @@ compareRouter.get(
   asyncHandler(async (req, res) => {
     const { baseCompanyId, compareCompanyId, sortKeys } = req.query;
 
+    /**
+     * compareCompanyId/sortKeys count === 1 -> string
+     * compareCompanyId/sortKeys count > 1 -> array
+     *
+     * compareCompanyId = 'asfdsdf'
+     * compareCompanyId = ['asfdsdf', 'asdfasdf']
+     *
+     * ['asfdsdf'] or [['asfdsdf', 'asdfasdf']]
+     * flat()
+     * ['asfdsdf'] or ['asfdsdf', 'asdfasdf']
+     */
+
+    const compareCompanyIdList = [compareCompanyId].flat();
+    const sortKeyList = [sortKeys].flat();
+
     const sort = {
       totalInvestment: -1,
       revenue: -1,
       employees: -1,
     };
 
-    sortKeys.forEach((sortKey) => {
+    sortKeyList.forEach((sortKey) => {
       if (sortKey === "totalInvestment") {
         sort.totalInvestment = 1;
       } else if (sortKey === "revenue") {
@@ -62,7 +77,7 @@ compareRouter.get(
       }
     });
 
-    const companies = await Company.find({ id: { $in: [baseCompanyId, ...compareCompanyId] } })
+    const companies = await Company.find({ id: { $in: [baseCompanyId, ...compareCompanyIdList] } })
       .sort(sort)
       .lean()
       .exec();
@@ -76,8 +91,8 @@ compareRouter.get(
           },
         },
       ),
-      Company.updateOne(
-        { id: baseCompanyId },
+      Company.updateMany(
+        { id: { $in: compareCompanyIdList } },
         {
           $inc: {
             selectOtherCount: 1,
