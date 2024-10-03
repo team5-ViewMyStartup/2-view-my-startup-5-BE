@@ -4,8 +4,8 @@ import { asyncHandler } from "../../utils/async-handler.js";
 
 export const compareRouter = express.Router();
 
-// 기업 선택 API
-companiesRouter.post(
+// 기업 선택 시 selectMyCount, selectOtherCount 업데이트 API
+compareRouter.post(
   "/select",
   asyncHandler(async (req, res) => {
     const { companyId, isMyCompany } = req.body;
@@ -15,14 +15,20 @@ companiesRouter.post(
       throw new NotFoundError("회사를 찾을 수 없습니다.");
     }
 
-    if (!isMyCompany) {
-      company.selectMyCount += 1;
+    const query = {
+      $inc: {},
+    };
+
+    if (isMyCompany) {
+      query.$inc.selectMyCount = 1;
     } else {
-      company.selectOtherCount += 1;
+      query.$inc.selectOtherCount = 1;
     }
 
-    await company.save();
+    // atomic
 
-    return res.json(company);
+    const updatedCompany = await Company.findOneAndUpdate({ id: companyId }, query, { new: true });
+
+    return res.json(updatedCompany);
   }),
 );
