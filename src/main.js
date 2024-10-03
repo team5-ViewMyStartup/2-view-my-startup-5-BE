@@ -22,4 +22,4 @@ app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
 app.use("/signup", signUpRouter);
-app.listen(3000, () => console.log("Server Started"));
+app.listen(4000, () => console.log("Server Started"));
