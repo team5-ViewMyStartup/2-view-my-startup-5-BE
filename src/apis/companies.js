@@ -1,6 +1,7 @@
 import express from "express";
 import Company from "../models/company.schema.js";
-import { asyncHandler } from "../../utils/async-handler.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { loginChecker } from "../middlewares/login-checker.js";
 
 export const companiesRouter = express.Router();
 
@@ -8,6 +9,7 @@ export const companiesRouter = express.Router();
 
 companiesRouter.get(
   "/",
+  loginChecker,
   asyncHandler(async (req, res) => {
     const companyList = await Company.find();
 

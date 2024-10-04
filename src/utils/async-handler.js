@@ -3,7 +3,7 @@ import {
   NotFoundError,
   ConflictError,
   InternalServerError,
-} from "../src/error.js";
+} from "../error/error.js";
 
 export function asyncHandler(handler) {
   return async (req, res, next) => {

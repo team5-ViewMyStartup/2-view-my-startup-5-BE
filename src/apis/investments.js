@@ -1,7 +1,8 @@
 import express from "express";
-import { NotFoundError } from "../error.js";
+import { NotFoundError } from "../error/error.js";
 import Investment from "../models/investment.schema.js";
-import { asyncHandler } from "../../utils/async-handler.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { loginChecker } from "../middlewares/login-checker.js";
 import User from "../models/user.schema.js";
 
 export const investmentsRouter = express.Router();
@@ -25,15 +26,11 @@ investmentsRouter.get(
   }),
 );
 
-/**
- * invest api
- */
 investmentsRouter.post(
   "/",
+  loginChecker,
   asyncHandler(async (req, res) => {
     const { investorName, amount, comment, companyId, password } = req.body;
-    // TODO: after login complete, delete below code
-    const { email } = req.body;
 
     const user = await User.findOne({ email });
     if (user.password !== password) throw new Error("incorrect password");
