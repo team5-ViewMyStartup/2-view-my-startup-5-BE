@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import { companiesRouter } from "./apis/companies.js";
 import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 mongoose
   .connect(process.env.DATABASE_URL)
