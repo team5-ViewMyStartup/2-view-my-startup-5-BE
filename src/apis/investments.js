@@ -25,14 +25,13 @@ investmentsRouter.get(
   }),
 );
 
-investmentsRouter.put(
+investmentsRouter.patch(
   "/:investmentId",
   asyncHandler(async (req, res) => {
     const { investmentId } = req.params;
-    const { comment, password, nickname } = req.body;
+    const { investorName, comment, password } = req.body;
 
-    //임시
-    const user = await User.findOne({ nickname });
+    const user = await User.findOne({ nickname: investorName });
     if (!user || user.password !== password) {
       throw new Error("잘못된 비밀번호입니다.");
     }
@@ -54,10 +53,9 @@ investmentsRouter.delete(
   "/:investmentId",
   asyncHandler(async (req, res) => {
     const { investmentId } = req.params;
-    const { password, nickname } = req.body;
+    const { investorName, password } = req.body;
 
-    // 임시
-    const user = await User.findOne({ nickname });
+    const user = await User.findOne({ nickname: investorName });
     if (!user || user.password !== password) {
       throw new Error("투자 정보를 찾을 수 없습니다.");
     }
