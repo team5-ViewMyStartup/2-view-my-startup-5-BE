@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { companiesRouter } from "./apis/companies.js";
+import { compareRouter } from "./apis/compare.js";
 import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
 import cors from "cors";
