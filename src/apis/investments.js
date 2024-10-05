@@ -2,6 +2,8 @@ import express from "express";
 import { NotFoundError } from "../error/error.js";
 import Investment from "../models/investment.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
+import { loginChecker } from "../middlewares/login-checker.js";
+import User from "../models/user.schema.js";
 
 export const investmentsRouter = express.Router();
 
@@ -21,6 +23,28 @@ investmentsRouter.get(
       throw new NotFoundError("기업에 투자한 정보가 없습니다.");
     }
     res.json(investments);
+  }),
+);
+
+investmentsRouter.post(
+  "/",
+  loginChecker,
+  asyncHandler(async (req, res) => {
+    const { investorName, amount, comment, companyId, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (user.password !== password) throw new Error("incorrect password");
+
+    const newInvestment = {
+      investorName,
+      amount,
+      comment,
+      companyId,
+    };
+
+    await Investment.create(newInvestment);
+
+    res.json(newInvestment);
   }),
 );
 
