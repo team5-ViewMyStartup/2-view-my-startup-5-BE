@@ -3,8 +3,7 @@ import { UnauthorizedError } from "../error/error.js";
 export const loginChecker = async (req, res, next) => {
   const bearerToken = req.get("Authorization");
   const [_, token] = (bearerToken || "").split(" ");
-  // a = 'Bearer'
-  // b(token) = asdfsdfasdsfaadsfadsfadfsa
+
   if (!token) {
     throw new UnauthorizedError("잘못된 토큰 형식입니다.");
   }

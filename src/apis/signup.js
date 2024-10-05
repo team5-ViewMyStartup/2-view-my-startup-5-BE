@@ -30,8 +30,6 @@ signUpRouter.post(
       existingNicknamePromise,
     ]);
 
-    // Promise.all 공부하기
-
     console.log(existingUser, existingNickname);
 
     if (existingUser || existingNickname) {
@@ -48,14 +46,13 @@ signUpRouter.post(
     });
 
     await newUser.save();
-    // await를 안 붙이면 코드를 한 싸이클 돌고 실행된다. (별로 안 중요한 거, 즉시 저장할 필요 없는거는 await를 떼기도 함)
 
     res.status(201).json("회원가입이 정상적으로 완료되었습니다.");
   }),
 );
 
 signUpRouter.post(
-  "/:login",
+  "/login",
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
