@@ -4,8 +4,10 @@ import { companiesRouter } from "./apis/companies.js";
 import { compareRouter } from "./apis/compare.js";
 import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 mongoose
   .connect(process.env.DATABASE_URL)
@@ -22,7 +24,6 @@ mongoose.connection.on("close", () => console.log("close"));
 app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
+app.use("/users", signUpRouter);
 app.use("/compare", compareRouter);
-app.use("/signup", signUpRouter);
-
 app.listen(4000, () => console.log("Server Started"));
