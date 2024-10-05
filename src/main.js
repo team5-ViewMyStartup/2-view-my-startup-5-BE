@@ -24,4 +24,5 @@ app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
 app.use("/users", signUpRouter);
+app.use("/compare", compareRouter);
 app.listen(4000, () => console.log("Server Started"));
