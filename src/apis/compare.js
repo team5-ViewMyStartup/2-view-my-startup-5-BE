@@ -1,6 +1,6 @@
 import express from "express";
 import Company from "../models/company.schema.js";
-import { asyncHandler } from "../../utils/async-handler.js";
+import { asyncHandler } from "../utils/async-handler.js";
 
 export const compareRouter = express.Router();
 
