@@ -72,6 +72,10 @@ signUpRouter.post(
 
     const token = tokenService.getToken(email);
 
-    res.set("Authorization", `Bearer ${token}`).status(200).json({ message: "success" });
+    res
+      .set("Access-Control-Expose-Headers", "Authorization")
+      .set("Authorization", `Bearer ${token}`)
+      .status(200)
+      .json({ message: "success" });
   }),
 );

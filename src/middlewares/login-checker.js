@@ -1,4 +1,6 @@
-import { UnauthorizedError } from "../error/error.js";
+import { UnauthorizedError, NotFoundError } from "../error/error.js";
+import tokenService from "../jwt/index.js";
+import User from "../models/user.schema.js";
 
 export const loginChecker = async (req, res, next) => {
   const bearerToken = req.get("Authorization");
@@ -13,13 +15,13 @@ export const loginChecker = async (req, res, next) => {
 
     const user = await User.findOne({ email }).exec();
     if (!user) {
-      throw new Error("사용자를 찾을 수 없습니다.");
+      throw new NotFoundError("사용자를 찾을 수 없습니다.");
     }
 
     req.email = email;
 
     next();
   } catch (err) {
-    throw new Error(`유효하지 않은 토큰입니다. - ${err.message}`);
+    throw new UnauthorizedError(`유효하지 않은 토큰입니다. - ${err.message}`);
   }
 };
