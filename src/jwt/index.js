@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { UnauthorizedError } from "../error/error.js";
 
 const tokenService = {
   getToken(email) {
@@ -8,7 +9,11 @@ const tokenService = {
   },
 
   getPayload: (token) => {
-    return jwt.verify(token, process.env.SECRET_KEY);
+    try {
+      return jwt.verify(token, process.env.SECRET_KEY);
+    } catch (e) {
+      throw new UnauthorizedError("유효하지 않은 토큰입니다.");
+    }
   },
 };
 
