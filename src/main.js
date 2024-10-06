@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { companiesRouter } from "./apis/companies.js";
+import { compareRouter } from "./apis/compare.js";
 import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
 import cors from "cors";
@@ -23,5 +24,6 @@ mongoose.connection.on("close", () => console.log("close"));
 app.use(express.json());
 app.use("/companies", companiesRouter);
 app.use("/investments", investmentsRouter);
-app.use("/signup", signUpRouter);
+app.use("/users", signUpRouter);
+app.use("/compare", compareRouter);
 app.listen(4000, () => console.log("Server Started"));

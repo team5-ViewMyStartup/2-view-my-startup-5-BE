@@ -36,11 +36,11 @@ export const companySchema = new mongoose.Schema(
     },
     selectMyCount: {
       type: Number,
-      required: true,
+      default: 0,
     },
     selectOtherCount: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   { collection: "company" },

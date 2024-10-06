@@ -1,9 +1,9 @@
 import express from "express";
-import { NotFoundError } from "../error.js";
+import { NotFoundError } from "../error/error.js";
 import Investment from "../models/investment.schema.js";
-import Company from "../models/company.schema.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { loginChecker } from "../middlewares/login-checker.js";
 import User from "../models/user.schema.js";
-import { asyncHandler } from "../../utils/async-handler.js";
 
 export const investmentsRouter = express.Router();
 
@@ -25,49 +25,25 @@ investmentsRouter.get(
   }),
 );
 
-investmentsRouter.patch(
-  "/:investmentId",
+investmentsRouter.post(
+  "/",
+  loginChecker,
   asyncHandler(async (req, res) => {
-    const { investmentId } = req.params;
-    const { investorName, comment, password } = req.body;
+    const { investorName, amount, comment, companyId, password } = req.body;
 
-    const user = await User.findOne({ nickname: investorName });
-    if (!user || user.password !== password) {
-      throw new Error("잘못된 비밀번호입니다.");
-    }
+    const user = await User.findOne({ email });
+    if (user.password !== password) throw new Error("incorrect password");
 
-    const investment = await Investment.findById(investmentId);
-    if (!investment) {
-      throw new NotFoundError("투자 정보를 찾을 수 없습니다.");
-    }
+    const newInvestment = {
+      investorName,
+      amount,
+      comment,
+      companyId,
+    };
 
-    investment.comment = comment;
+    await Investment.create(newInvestment);
 
-    await investment.save();
-
-    res.json(investment);
-  }),
-);
-
-investmentsRouter.delete(
-  "/:investmentId",
-  asyncHandler(async (req, res) => {
-    const { investmentId } = req.params;
-    const { investorName, password } = req.body;
-
-    const user = await User.findOne({ nickname: investorName });
-    if (!user || user.password !== password) {
-      throw new Error("투자 정보를 찾을 수 없습니다.");
-    }
-
-    const investment = await Investment.findById(investmentId);
-    if (!investment) {
-      throw new NotFoundError("투자 정보를 찾을 수 없습니다.");
-    }
-
-    await investment.deleteOne();
-
-    res.json();
+    res.json(newInvestment);
   }),
 );
 
