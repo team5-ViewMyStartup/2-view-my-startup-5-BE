@@ -7,11 +7,37 @@ export const companiesRouter = express.Router();
 
 // 기업 전체리스트 (메인페이지) API
 
+function getSortOption(sortField) {
+  const sortOption = {
+    totalInvestment: "asc",
+    revenue: "asc",
+    employees: "asc",
+  };
+
+  switch (sortField) {
+    case "totalInvestment":
+      sortOption.totalInvestment = "desc";
+      break;
+
+    case "revenue":
+      sortOption.revenue = "desc";
+      break;
+
+    default:
+      sortOption.employees = "desc";
+  }
+
+  return sortOption;
+}
+
 companiesRouter.get(
   "/",
   loginChecker,
   asyncHandler(async (req, res) => {
-    const companyList = await Company.find();
+    const sort = req.query.sort;
+    const sortOption = getSortOption(sort);
+
+    const companyList = await Company.find().sort(sortOption);
 
     res.json(companyList);
   }),

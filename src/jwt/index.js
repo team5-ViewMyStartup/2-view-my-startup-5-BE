@@ -11,7 +11,7 @@ const tokenService = {
   getPayload: (token) => {
     try {
       return jwt.verify(token, process.env.SECRET_KEY);
-    } catch (e) {
+    } catch (err) {
       throw new UnauthorizedError("유효하지 않은 토큰입니다.");
     }
   },
