@@ -110,7 +110,7 @@ const data = [
   {
     investorName: "강재희",
     amount: 1,
-    comment: "코드스테이츠의 강의가 매우 유용합니다!",
+    comment: "코드잇의 강의가 매우 유용합니다!",
     companyId: "02520ccb-98b3-4384-894b-99027365791b",
   },
   {
@@ -128,7 +128,7 @@ const data = [
   {
     investorName: "이시우",
     amount: 1,
-    comment: "코드스테이츠의 팀에 신뢰를 가지고 있습니다!",
+    comment: "코드잇의 팀에 신뢰를 가지고 있습니다!",
     companyId: "02520ccb-98b3-4384-894b-99027365791b",
   },
   {
@@ -140,7 +140,7 @@ const data = [
   {
     investorName: "이태희",
     amount: 1,
-    comment: "코드스테이츠의 교육 콘텐츠가 매우 훌륭합니다!",
+    comment: "코드잇의 교육 콘텐츠가 매우 훌륭합니다!",
     companyId: "02520ccb-98b3-4384-894b-99027365791b",
   },
   {
