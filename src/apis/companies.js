@@ -7,26 +7,24 @@ export const companiesRouter = express.Router();
 
 // 기업 전체리스트 (메인페이지) API
 
-function getSortOption(query) {
-  const sortOption = {};
+function getSortOption(sortField) {
+  const sortOption = {
+    totalInvestment: "asc",
+    revenue: "asc",
+    employees: "asc",
+  };
 
-  switch (query) {
+  switch (sortField) {
     case "totalInvestment":
       sortOption.totalInvestment = "desc";
-      sortOption.revenue = "asc";
-      sortOption.employees = "asc";
       break;
 
     case "revenue":
       sortOption.revenue = "desc";
-      sortOption.totalInvestment = "asc";
-      sortOption.employees = "asc";
       break;
 
     default:
       sortOption.employees = "desc";
-      sortOption.totalInvestment = "asc";
-      sortOption.revenue = "asc";
   }
 
   return sortOption;
