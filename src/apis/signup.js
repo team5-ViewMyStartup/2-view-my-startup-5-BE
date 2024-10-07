@@ -1,5 +1,10 @@
 import express from "express";
-import { ValidationError, UnauthorizedError, ConflictError } from "../error/error.js";
+import {
+  ValidationError,
+  UnauthorizedError,
+  NotFoundError,
+  ConflictError,
+} from "../error/error.js";
 import User from "../models/user.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { banningEmptySpaces } from "../utils/validation.js";
@@ -30,7 +35,7 @@ signUpRouter.post(
       existingNicknamePromise,
     ]);
 
-    console.log(existingUser, existingNickname);
+    // console.log(existingUser, existingNickname);
 
     if (existingUser || existingNickname) {
       throw new ConflictError("이미 사용중인 이메일 혹은 닉네임입니다.");
@@ -62,7 +67,7 @@ signUpRouter.post(
 
     const user = await User.findOne({ email });
     if (!user) {
-      throw new ValidationError("존재하지 않는 사용자입니다.");
+      throw new NotFoundError("존재하지 않는 사용자입니다.");
     }
 
     const comparingPassword = await bcrypt.compare(password, user.password);

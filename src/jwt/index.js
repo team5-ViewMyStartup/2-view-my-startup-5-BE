@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "../error/error.js";
 
 const tokenService = {
-  getToken(email) {
-    return jwt.sign({ email }, process.env.SECRET_KEY, {
+  getToken(email, nickname) {
+    return jwt.sign({ email, nickname }, process.env.SECRET_KEY, {
       expiresIn: "30m",
     });
   },
