@@ -70,6 +70,6 @@ signUpRouter.post(
       .set("Access-Control-Expose-Headers", "Authorization")
       .set("Authorization", `Bearer ${token}`)
       .status(200)
-      .json({ message: "success" });
+      .json({ message: "로그인에 성공했습니다." });
   }),
 );
