@@ -1,5 +1,5 @@
 import { UnauthorizedError, NotFoundError } from "../utils/error.js";
-import jwt from "../utils/jwt.js";
+import { jwt } from "../utils/jwt.js";
 import User from "../models/user.schema.js";
 
 export const loginChecker = async (req, res, next) => {

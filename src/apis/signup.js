@@ -8,7 +8,7 @@ import {
 import User from "../models/user.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { hasWhiteSpace } from "../utils/validation.js";
-import jwt from "../utils/jwt.js";
+import { jwt } from "../utils/jwt.js";
 import bcrypt from "bcryptjs";
 
 export const signUpRouter = express.Router();
