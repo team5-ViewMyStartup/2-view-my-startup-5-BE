@@ -1,4 +1,4 @@
-import { InternalServerError } from "./error.js";
+import { InternalServerError, NotFoundError } from "./error.js";
 
 export function errorHandler(err, req, res, next) {
   const error = err.statusCode ? err : new InternalServerError();
