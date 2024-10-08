@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken";
-import { UnauthorizedError } from "../error/error.js";
+import { UnauthorizedError } from "./error.js";
 
-const tokenService = {
+export const jwt = {
   getToken(email, nickname) {
     return jwt.sign({ email, nickname }, process.env.SECRET_KEY, {
       expiresIn: "30m",
     });
   },
 
-  getPayload: (token) => {
+  getPayload(token) {
     try {
       return jwt.verify(token, process.env.SECRET_KEY);
     } catch (err) {
@@ -16,5 +16,3 @@ const tokenService = {
     }
   },
 };
-
-export default tokenService;

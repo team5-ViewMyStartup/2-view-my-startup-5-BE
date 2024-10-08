@@ -6,7 +6,6 @@ import { loginChecker } from "../middlewares/login-checker.js";
 export const companiesRouter = express.Router();
 
 // 기업 전체리스트 (메인페이지) API
-
 function getSortOption(sortField) {
   const sortOption = {
     totalInvestment: "asc",

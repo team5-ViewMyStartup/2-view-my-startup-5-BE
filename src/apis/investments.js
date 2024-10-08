@@ -1,5 +1,5 @@
 import express from "express";
-import { NotFoundError } from "../error/error.js";
+import { NotFoundError } from "../utils/error.js";
 import Investment from "../models/investment.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 
