@@ -1,9 +1,14 @@
-import { UnauthorizedError, NotFoundError } from "../error/error.js";
-import tokenService from "../jwt/index.js";
+import { UnauthorizedError, NotFoundError } from "../utils/error.js";
+import { jwt } from "../utils/jwt.js";
 import User from "../models/user.schema.js";
 
 export const loginChecker = async (req, res, next) => {
   const bearerToken = req.get("Authorization");
+
+  if (!bearerToken) {
+    throw new UnauthorizedError("API 요청에서 Authorization 헤더가 전달되지 않았습니다.");
+  }
+
   const [_, token] = (bearerToken || "").split(" ");
 
   if (!token) {
@@ -11,14 +16,13 @@ export const loginChecker = async (req, res, next) => {
   }
 
   try {
-    const { email } = tokenService.getPayload(token);
-
+    const { email, nickname } = jwt.getPayload(token);
     const user = await User.findOne({ email }).exec();
     if (!user) {
       throw new NotFoundError("사용자를 찾을 수 없습니다.");
     }
 
-    req.email = email;
+    req.user = { email, nickname };
 
     next();
   } catch (err) {

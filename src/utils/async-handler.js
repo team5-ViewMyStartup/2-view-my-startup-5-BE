@@ -1,23 +1,12 @@
-import {
-  ValidationError,
-  NotFoundError,
-  ConflictError,
-  InternalServerError,
-} from "../error/error.js";
+import { InternalServerError } from "./error.js";
 
 export function asyncHandler(handler) {
   return async (req, res, next) => {
     try {
       await handler(req, res, next);
     } catch (e) {
-      if (
-        !(e instanceof ValidationError) &&
-        !(e instanceof NotFoundError) &&
-        !(e instanceof ConflictError)
-      ) {
-        e = new InternalServerError(e.message);
-      }
-      next(e);
+      const error = e.statusCode ? e : new InternalServerError(e.message);
+      next(error);
     }
   };
 }

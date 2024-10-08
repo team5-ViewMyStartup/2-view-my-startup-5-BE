@@ -1,1 +1,1 @@
-export const banningEmptySpaces = (str) => !str || /\s/g.test(str);
+export const hasWhiteSpace = (str) => !str || /\s/g.test(str);
