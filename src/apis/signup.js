@@ -16,7 +16,7 @@ export const signUpRouter = express.Router();
 signUpRouter.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { email, nickname, password } = req.body.user;
+    const { email, nickname, password } = req.body.email;
 
     if (hasWhiteSpace(email) || hasWhiteSpace(nickname) || hasWhiteSpace(password)) {
       throw new ValidationError("정보 입력란에 공백을 사용할 수 없습니다.");
