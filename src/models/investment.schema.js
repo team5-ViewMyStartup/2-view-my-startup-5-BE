@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 export const investmentSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      required: true,
+    },
     investorName: {
       type: String,
       required: true,

@@ -8,7 +8,13 @@ import { compareRouter } from "./apis/compare.js";
 import { errorHandler } from "./utils/error-handler.js";
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    exposedHeaders: ["Authorization"],
+  }),
+);
 
 mongoose
   .connect(process.env.DATABASE_URL)
