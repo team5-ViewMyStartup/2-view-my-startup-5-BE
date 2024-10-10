@@ -16,7 +16,7 @@ export const signUpRouter = express.Router();
 signUpRouter.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { email, nickname, password } = req.body.email;
+    const { email, nickname, password } = req.body;
 
     if (hasWhiteSpace(email) || hasWhiteSpace(nickname) || hasWhiteSpace(password)) {
       throw new ValidationError("정보 입력란에 공백을 사용할 수 없습니다.");
@@ -64,12 +64,11 @@ signUpRouter.post(
       throw new UnauthorizedError("비밀번호가 일치하지 않습니다.");
     }
 
-    const token = jwt.getToken(email);
+    const token = jwt.getToken(email, user.nickname);
 
     res
       .set("Access-Control-Expose-Headers", "Authorization")
-      .set("Authorization", `Bearer ${token}`)
-      .status(200)
-      .json({ message: "로그인에 성공했습니다." });
+      .set("Authorization", `Bearer ${token}`);
+    res.status(200).json({ message: "로그인에 성공했습니다." });
   }),
 );
