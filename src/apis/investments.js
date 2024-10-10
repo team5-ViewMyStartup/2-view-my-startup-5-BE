@@ -48,9 +48,6 @@ investmentsRouter.patch(
       throw new UnauthorizedError("본인이 투자한 정보만 수정할 수 있습니다.");
     }
 
-    console.log(email, id, comment);
-
-    // atomic
     const updateInvestment = await Investment.findOneAndUpdate({ id }, { comment }, { new: true });
 
     res.status(200).json(updateInvestment);
@@ -100,14 +97,11 @@ investmentsRouter.post(
     }
 
     try {
-      console.log(password, user.password);
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         throw new UnauthorizedError("비밀번호가 올바르지 않습니다.");
       }
-
       const company = await Company.findOne({ id: companyId }).lean().exec();
-      console.log(company);
 
       const newInvestment = await new Investment({
         companyId,
@@ -121,7 +115,7 @@ investmentsRouter.post(
       res.status(201).json(newInvestment);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "투자 저장 중 서버 오류가 발생했습니다" });
+      res.status(500).json({ error: "투자 저장 중 서버 오류가 발생했습니" }); // 명확한 에러 메시지 반환
     }
   }),
 );
