@@ -10,6 +10,7 @@ import { asyncHandler } from "../utils/async-handler.js";
 import { hasWhiteSpace } from "../utils/validation.js";
 import { jwt } from "../utils/jwt.js";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
 
 export const signUpRouter = express.Router();
 
@@ -34,6 +35,7 @@ signUpRouter.post(
     const dbPassword = await bcrypt.hash(password, saltRound);
 
     const newUser = new User({
+      id: uuidv4(),
       email,
       nickname,
       password: dbPassword,
