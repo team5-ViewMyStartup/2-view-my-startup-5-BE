@@ -6,10 +6,14 @@ import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
 import { compareRouter } from "./apis/compare.js";
 import { errorHandler } from "./utils/error-handler.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(
   cors({
+    origin: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
     exposedHeaders: ["Authorization"],

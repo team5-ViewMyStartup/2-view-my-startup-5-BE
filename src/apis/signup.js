@@ -8,6 +8,7 @@ import {
 import User from "../models/user.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { hasWhiteSpace } from "../utils/validation.js";
+import { randomUUID } from "crypto";
 import { jwt } from "../utils/jwt.js";
 import bcrypt from "bcryptjs";
 
@@ -16,7 +17,7 @@ export const signUpRouter = express.Router();
 signUpRouter.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { email, nickname, password } = req.body;
+    const { email, nickname, password } = req.body.user;
 
     if (hasWhiteSpace(email) || hasWhiteSpace(nickname) || hasWhiteSpace(password)) {
       throw new ValidationError("정보 입력란에 공백을 사용할 수 없습니다.");
@@ -34,6 +35,7 @@ signUpRouter.post(
     const dbPassword = await bcrypt.hash(password, saltRound);
 
     const newUser = new User({
+      id: randomUUID(),
       email,
       nickname,
       password: dbPassword,
