@@ -26,6 +26,6 @@ export const loginChecker = async (req, res, next) => {
 
     next();
   } catch (err) {
-    next(UnauthorizedError(`유효하지 않은 토큰입니다. - ${err.message}`));
+    next(new UnauthorizedError(`유효하지 않은 토큰입니다. - ${err.message}`));
   }
 };
