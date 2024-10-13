@@ -23,3 +23,18 @@ compareRouter.get(
     res.json(companies);
   }),
 );
+
+compareRouter.get(
+  "/rank",
+  asyncHandler(async (req, res) => {
+    const { baseCompanyId, sortKey } = req.query;
+
+    if (!baseCompanyId || !sortKey) {
+      return res.status(400).json({ error: "Missing required parameters" });
+    }
+
+    const nearbyCompanies = await CompanyModel.findNearbyCompanies(baseCompanyId, sortKey);
+
+    res.json(nearbyCompanies);
+  }),
+);
