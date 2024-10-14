@@ -35,8 +35,8 @@ compareRouter.get(
 
     const company = (await CompanyModel.findById([id]))[0];
 
-    let greatRevenueCase = await Company.find({
-      revenue: { $gt: company.revenue },
+    let greatRevenueCase = Company.find({
+      revenue: { $gte: company.revenue },
       id: { $ne: id },
     })
       .limit(2)
@@ -44,8 +44,8 @@ compareRouter.get(
       .lean()
       .exec();
 
-    let lessRevenueCase = await Company.find({
-      revenue: { $lte: company.revenue },
+    let lessRevenueCase = Company.find({
+      revenue: { $lt: company.revenue },
       id: { $ne: id },
     })
       .limit(2)
@@ -53,7 +53,7 @@ compareRouter.get(
       .lean()
       .exec();
 
-    let greatEmployeesCase = await Company.find({
+    let greatEmployeesCase = Company.find({
       employees: { $gte: company.employees },
       id: { $ne: id },
     })
@@ -62,8 +62,8 @@ compareRouter.get(
       .lean()
       .exec();
 
-    let lessEmployeesCase = await Company.find({
-      employees: { $lte: company.employees },
+    let lessEmployeesCase = Company.find({
+      employees: { $lt: company.employees },
       id: { $ne: id },
     })
       .limit(2)
@@ -71,69 +71,95 @@ compareRouter.get(
       .lean()
       .exec();
 
+    [greatRevenueCase, lessRevenueCase, greatEmployeesCase, lessEmployeesCase] = await Promise.all([
+      greatRevenueCase,
+      lessRevenueCase,
+      greatEmployeesCase,
+      lessEmployeesCase,
+    ]);
+
     // 순위 데이터를 회사 데이터에다가 합쳐서 줄 생각하기
-    let companyRevenueRank = await Company.countDocuments({
+    let companyRevenueRank = Company.countDocuments({
       revenue: {
         $gt: company.revenue,
       },
     });
-    companyRevenueRank += 1;
-
-    let companyEmployeesRank = await Company.countDocuments({
+    let companyEmployeesRank = Company.countDocuments({
       employees: {
         $gt: company.employees,
       },
     });
+
+    [companyRevenueRank, companyEmployeesRank] = await Promise.all([
+      companyRevenueRank,
+      companyEmployeesRank,
+    ]);
+
+    companyRevenueRank += 1;
     companyEmployeesRank += 1;
 
+    /**
+     * {
+     *  revenue: {
+     *    gte: [],
+     *    lt: []
+     *  },
+     *  employee: {
+     *    gte: [],
+     *    lt: []
+     *  }
+     * }
+     */
+
+    const revenue = {
+      gte: greatRevenueCase,
+      lt: lessRevenueCase,
+    };
+    const employee = {
+      gte: greatEmployeesCase,
+      lt: lessEmployeesCase,
+    };
+
     if (greatRevenueCase.length < 2) {
-      const great5Revenue = await Company.find({
-        id: { $ne: id },
-      })
-        .limit(4)
-        .sort({ revenue: -1 })
-        .lean()
-        .exec();
-      greatRevenueCase = great5Revenue;
+      const rankCompanies = await Company.find({}).limit(5).sort({ revenue: -1 }).lean().exec();
+      revenue.gte = [];
+      revenue.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.revenue > company.revenue) revenue.gte.push(rankCompany);
+        if (rankCompany.revenue < company.revenue) revenue.lt.push(rankCompany);
+      });
     } else if (lessRevenueCase.length < 2) {
-      const less5Revenue = await Company.find({
-        id: { $ne: id },
-      })
-        .limit(4)
-        .sort({ revenue: 1 })
-        .lean()
-        .exec();
-      lessRevenueCase = less5Revenue;
+      const rankCompanies = await Company.find({}).limit(5).sort({ revenue: 1 }).lean().exec();
+      revenue.gte = [];
+      revenue.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.revenue > company.revenue) revenue.gte.push(rankCompany);
+        if (rankCompany.revenue < company.revenue) revenue.lt.push(rankCompany);
+      });
     }
 
     if (greatEmployeesCase.length < 2) {
-      const great5Employees = await Company.find({
-        id: { $ne: id },
-      })
-        .limit(4)
-        .sort({ employees: -1 })
-        .lean()
-        .exec();
-      greatEmployeesCase = great5Employees;
+      const rankCompanies = await Company.find({}).limit(5).sort({ employees: -1 }).lean().exec();
+      employee.gte = [];
+      employee.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.employees > company.employees) employee.gte.push(rankCompany);
+        if (rankCompany.employees < company.employees) employee.lt.push(rankCompany);
+      });
     } else if (lessEmployeesCase.length < 2) {
-      const less5Employees = await Company.find({
-        id: { $ne: id },
-      })
-        .limit(4)
-        .sort({ employees: 1 })
-        .lean()
-        .exec();
-      lessEmployeesCase = less5Employees;
+      const rankCompanies = await Company.find({}).limit(5).sort({ employees: 1 }).lean().exec();
+      employee.gte = [];
+      employee.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.employees > company.employees) employee.gte.push(rankCompany);
+        if (rankCompany.employees < company.employees) employee.lt.push(rankCompany);
+      });
     }
 
-    const revenueResult = { greatRevenueCase, lessRevenueCase, companyRevenueRank };
-    const employeesResult = { greatEmployeesCase, lessEmployeesCase, companyEmployeesRank };
-
-    const result = {
-      revenueResult,
-      employeesResult,
-    };
-
-    res.json(result);
+    res.json({ revenue, employee });
   }),
 );
