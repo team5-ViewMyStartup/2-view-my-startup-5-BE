@@ -86,20 +86,43 @@ compareRouter.get(
     });
     companyEmployeesRank += 1;
 
-    // top 5, bottom 5
     if (greatRevenueCase.length < 2) {
-      const great5Revenue = await Company.find().limit(5).sort({ revenue: -1 }).lean().exec();
+      const great5Revenue = await Company.find({
+        id: { $ne: id },
+      })
+        .limit(4)
+        .sort({ revenue: -1 })
+        .lean()
+        .exec();
       greatRevenueCase = great5Revenue;
     } else if (lessRevenueCase.length < 2) {
-      const less5Revenue = await Company.find().limit(5).sort({ revenue: 1 }).lean().exec();
+      const less5Revenue = await Company.find({
+        id: { $ne: id },
+      })
+        .limit(4)
+        .sort({ revenue: 1 })
+        .lean()
+        .exec();
       lessRevenueCase = less5Revenue;
     }
 
     if (greatEmployeesCase.length < 2) {
-      const great5Employees = await Company.find().limit(5).sort({ employees: -1 }).lean().exec();
+      const great5Employees = await Company.find({
+        id: { $ne: id },
+      })
+        .limit(4)
+        .sort({ employees: -1 })
+        .lean()
+        .exec();
       greatEmployeesCase = great5Employees;
     } else if (lessEmployeesCase.length < 2) {
-      const less5Employees = await Company.find().limit(5).sort({ employees: 1 }).lean().exec();
+      const less5Employees = await Company.find({
+        id: { $ne: id },
+      })
+        .limit(4)
+        .sort({ employees: 1 })
+        .lean()
+        .exec();
       lessEmployeesCase = less5Employees;
     }
 
