@@ -1,7 +1,7 @@
 import express from "express";
 import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
-import { loginChecker } from "../middlewares/login-checker.js";
+// import { loginChecker } from "../middlewares/login-checker.js";
 
 export const companiesRouter = express.Router();
 
@@ -31,7 +31,7 @@ function getSortOption(sortField) {
 
 companiesRouter.get(
   "/",
-  loginChecker,
+  // loginChecker,
   asyncHandler(async (req, res) => {
     const sort = req.query.sort;
     const sortOption = getSortOption(sort);
