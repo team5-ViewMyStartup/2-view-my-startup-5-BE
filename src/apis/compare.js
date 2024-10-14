@@ -2,6 +2,7 @@ import express from "express";
 import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { CompanyModel } from "../models/company.model.js";
+import { NotFoundError } from "../utils/error.js";
 
 export const compareRouter = express.Router();
 
@@ -27,14 +28,92 @@ compareRouter.get(
 compareRouter.get(
   "/rank",
   asyncHandler(async (req, res) => {
-    const { baseCompanyId, sortKey } = req.query;
-
-    if (!baseCompanyId || !sortKey) {
-      return res.status(400).json({ error: "Missing required parameters" });
+    const { id } = req.query;
+    if (!id) {
+      throw new NotFoundError("없는 ID입니다.");
     }
 
-    const nearbyCompanies = await CompanyModel.findNearbyCompanies(baseCompanyId, sortKey);
+    const company = (await CompanyModel.findById([id]))[0];
 
-    res.json(nearbyCompanies);
+    let greatRevenueCase = await Company.find({
+      revenue: { $gte: company.revenue },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ revenue: 1 })
+      .lean()
+      .exec();
+
+    let lessRevenueCase = await Company.find({
+      revenue: { $lte: company.revenue },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ revenue: -1 })
+      .lean()
+      .exec();
+
+    let greatEmployeesCase = await Company.find({
+      employees: { $gte: company.employees },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ employees: 1 })
+      .lean()
+      .exec();
+
+    let lessEmployeesCase = await Company.find({
+      employees: { $lte: company.employees },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ employees: -1 })
+      .lean()
+      .exec();
+
+    // 순위 데이터를 회사 데이터에다가 합쳐서 줄 생각하기
+    let companyRevenueRank = await Company.countDocuments({
+      revenue: {
+        $gt: company.revenue,
+      },
+    });
+    companyRevenueRank += 1;
+
+    let companyEmployeesRank = await Company.countDocuments({
+      employees: {
+        $gt: company.employees,
+      },
+    });
+    companyEmployeesRank += 1;
+
+    // top 5, bottom 5
+    if (greatRevenueCase.length < 2) {
+      const great5Revenue = await Company.find().limit(5).sort({ revenue: -1 }).lean().exec();
+      greatRevenueCase = great5Revenue;
+    } else if (lessRevenueCase.length < 2) {
+      const less5Revenue = await Company.find().limit(5).sort({ revenue: 1 }).lean().exec();
+      lessRevenueCase = less5Revenue;
+    }
+
+    if (greatEmployeesCase.length < 2) {
+      const great5Employees = await Company.find().limit(5).sort({ employees: -1 }).lean().exec();
+      greatEmployeesCase = great5Employees;
+    } else if (lessEmployeesCase.length < 2) {
+      const less5Employees = await Company.find().limit(5).sort({ employees: 1 }).lean().exec();
+      lessEmployeesCase = less5Employees;
+    }
+
+    console.log(greatRevenueCase);
+    console.log(lessRevenueCase);
+
+    const revenueResult = { greatRevenueCase, lessRevenueCase, companyRevenueRank };
+    const employeesResult = { greatEmployeesCase, lessEmployeesCase, companyEmployeesRank };
+
+    const result = {
+      revenueResult,
+      employeesResult,
+    };
+
+    res.json(result);
   }),
 );
