@@ -160,6 +160,6 @@ compareRouter.get(
       });
     }
 
-    res.json({ revenue, employee });
+    res.json({ revenue, employee, companyRevenueRank, companyEmployeesRank });
   }),
 );
