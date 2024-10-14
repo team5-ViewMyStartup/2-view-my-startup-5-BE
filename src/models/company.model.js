@@ -11,7 +11,7 @@ export const CompanyModel = {
       employees: -1,
     };
 
-    sortKeyList.forEach((sortKey) => {
+    sortKeyList?.forEach((sortKey) => {
       if (sortKey === "totalInvestment") {
         sort.totalInvestment = 1;
       } else if (sortKey === "revenue") {
