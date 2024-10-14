@@ -1,12 +1,9 @@
 import express from "express";
-import { NotFoundError, UnauthorizedError } from "../utils/error.js";
+import { NotFoundError } from "../utils/error.js";
 import Investment from "../models/investment.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { loginChecker } from "../middlewares/login-checker.js";
 import User from "../models/user.schema.js";
-import bcrypt from "bcrypt";
-import crypto from "node:crypto";
-import Company from "../models/company.schema.js";
 
 export const investmentsRouter = express.Router();
 
@@ -15,7 +12,11 @@ investmentsRouter.get(
   asyncHandler(async (req, res) => {
     const { companyId } = req.params;
 
-    const investments = await Investment.where({ companyId }).select({ _id: 0 }).lean().exec();
+    const investments = await Investment.where({ companyId }).select({
+      investorName: 1,
+      amount: 1,
+      comment: 1,
+    });
 
     if (!investments?.length) {
       throw new NotFoundError("기업에 투자한 정보가 없습니다.");
@@ -24,72 +25,11 @@ investmentsRouter.get(
   }),
 );
 
-investmentsRouter.patch(
-  "/:id",
-  loginChecker,
-  asyncHandler(async (req, res) => {
-    const { email } = req.user;
-    const { id } = req.params;
-    const { comment, password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    const investment = await Investment.findOne({ id });
-    if (!investment) {
-      throw new NotFoundError("해당 투자 정보를 찾을 수 없습니다.");
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedError("비밀번호가 올바르지 않습니다.");
-    }
-
-    if (investment.investorName !== user.nickname) {
-      throw new UnauthorizedError("본인이 투자한 정보만 수정할 수 있습니다.");
-    }
-
-    const updateInvestment = await Investment.findOneAndUpdate({ id }, { comment }, { new: true });
-
-    res.status(200).json(updateInvestment);
-  }),
-);
-
-investmentsRouter.delete(
-  "/:id",
-  loginChecker,
-  asyncHandler(async (req, res) => {
-    const { email } = req.user;
-    const { id } = req.params;
-    const { password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    const investment = await Investment.findOne({ id });
-    if (!investment) {
-      throw new NotFoundError("해당 투자 정보를 찾을 수 없습니다.");
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedError("비밀번호가 올바르지 않습니다.");
-    }
-
-    if (investment.investorName !== user.nickname) {
-      throw new UnauthorizedError("본인이 투자한 정보만 삭제할 수 있습니다.");
-    }
-
-    await Investment.findOneAndDelete({ id });
-
-    res.status(200).json({ message: "투자 정보가 삭제되었습니다." });
-  }),
-);
-
 investmentsRouter.post(
   "/",
   loginChecker,
   asyncHandler(async (req, res) => {
-    const { email } = req.user;
-    const { companyId, amount, comment, password } = req.body;
+    const { investorName, amount, comment, companyId, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
