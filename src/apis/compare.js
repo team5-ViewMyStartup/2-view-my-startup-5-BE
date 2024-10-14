@@ -36,7 +36,7 @@ compareRouter.get(
     const company = (await CompanyModel.findById([id]))[0];
 
     let greatRevenueCase = await Company.find({
-      revenue: { $gte: company.revenue },
+      revenue: { $gt: company.revenue },
       id: { $ne: id },
     })
       .limit(2)
@@ -102,9 +102,6 @@ compareRouter.get(
       const less5Employees = await Company.find().limit(5).sort({ employees: 1 }).lean().exec();
       lessEmployeesCase = less5Employees;
     }
-
-    console.log(greatRevenueCase);
-    console.log(lessRevenueCase);
 
     const revenueResult = { greatRevenueCase, lessRevenueCase, companyRevenueRank };
     const employeesResult = { greatEmployeesCase, lessEmployeesCase, companyEmployeesRank };
