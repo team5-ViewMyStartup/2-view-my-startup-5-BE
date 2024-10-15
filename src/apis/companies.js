@@ -1,11 +1,9 @@
 import express from "express";
 import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
-// import { loginChecker } from "../middlewares/login-checker.js";
 
 export const companiesRouter = express.Router();
 
-// 기업 전체리스트 (메인페이지) API
 function getSortOption(sortField) {
   const sortOption = {
     totalInvestment: "asc",
@@ -31,7 +29,6 @@ function getSortOption(sortField) {
 
 companiesRouter.get(
   "/",
-  // loginChecker,
   asyncHandler(async (req, res) => {
     const sort = req.query.sort;
     const sortOption = getSortOption(sort);
@@ -42,7 +39,6 @@ companiesRouter.get(
   }),
 );
 
-// 기업 상세 조회 APT
 companiesRouter.get(
   "/:id",
   asyncHandler(async (req, res) => {

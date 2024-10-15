@@ -19,7 +19,7 @@ app.use(
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => console.log("Connected to DB"))
-  .catch((e) => console.log(e)); //.env 연결 및 실패
+  .catch((e) => console.log(e));
 
 mongoose.connection.on("disconnected", () => console.log("disconnected"));
 mongoose.connection.on("reconnected", () => console.log("reconnected"));

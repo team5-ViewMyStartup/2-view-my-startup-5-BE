@@ -3,11 +3,13 @@ import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { CompanyModel } from "../models/company.model.js";
 import { NotFoundError } from "../utils/error.js";
+import { loginChecker } from "../middlewares/login-checker.js";
 
 export const compareRouter = express.Router();
 
 compareRouter.get(
   "/select",
+  loginChecker,
   asyncHandler(async (req, res) => {
     const { baseCompanyId, compareCompanyId, sortKeys } = req.query;
 
@@ -27,6 +29,7 @@ compareRouter.get(
 
 compareRouter.get(
   "/rank",
+  loginChecker,
   asyncHandler(async (req, res) => {
     const { id } = req.query;
     if (!id) {
@@ -78,7 +81,6 @@ compareRouter.get(
       lessEmployeesCase,
     ]);
 
-    // 순위 데이터를 회사 데이터에다가 합쳐서 줄 생각하기
     let companyRevenueRank = Company.countDocuments({
       revenue: {
         $gt: company.revenue,
@@ -97,19 +99,6 @@ compareRouter.get(
 
     companyRevenueRank += 1;
     companyEmployeesRank += 1;
-
-    /**
-     * {
-     *  revenue: {
-     *    gte: [],
-     *    lt: []
-     *  },
-     *  employee: {
-     *    gte: [],
-     *    lt: []
-     *  }
-     * }
-     */
 
     const revenue = {
       gte: greatRevenueCase,
