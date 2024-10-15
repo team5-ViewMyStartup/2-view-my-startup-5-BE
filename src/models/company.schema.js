@@ -42,6 +42,10 @@ export const companySchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    startupTotal: {
+      type: Number,
+      default: 0,
+    },
   },
   { collection: "company" },
 );
