@@ -3,7 +3,6 @@ import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { CompanyModel } from "../models/company.model.js";
 import { NotFoundError } from "../utils/error.js";
-import { loginChecker } from "../middlewares/login-checker.js";
 
 export const compareRouter = express.Router();
 
