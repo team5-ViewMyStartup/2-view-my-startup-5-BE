@@ -24,3 +24,128 @@ compareRouter.get(
     res.json(companies);
   }),
 );
+
+compareRouter.get(
+  "/rank",
+  asyncHandler(async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
+      throw new NotFoundError("없는 ID입니다.");
+    }
+
+    const company = (await CompanyModel.findById([id]))[0];
+
+    let greatRevenueCase = Company.find({
+      revenue: { $gte: company.revenue },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ revenue: 1 })
+      .lean()
+      .exec();
+
+    let lessRevenueCase = Company.find({
+      revenue: { $lt: company.revenue },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ revenue: -1 })
+      .lean()
+      .exec();
+
+    let greatEmployeesCase = Company.find({
+      employees: { $gte: company.employees },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ employees: 1 })
+      .lean()
+      .exec();
+
+    let lessEmployeesCase = Company.find({
+      employees: { $lt: company.employees },
+      id: { $ne: id },
+    })
+      .limit(2)
+      .sort({ employees: -1 })
+      .lean()
+      .exec();
+
+    [greatRevenueCase, lessRevenueCase, greatEmployeesCase, lessEmployeesCase] = await Promise.all([
+      greatRevenueCase,
+      lessRevenueCase,
+      greatEmployeesCase,
+      lessEmployeesCase,
+    ]);
+
+    let companyRevenueRank = Company.countDocuments({
+      revenue: {
+        $gt: company.revenue,
+      },
+    });
+    let companyEmployeesRank = Company.countDocuments({
+      employees: {
+        $gt: company.employees,
+      },
+    });
+
+    [companyRevenueRank, companyEmployeesRank] = await Promise.all([
+      companyRevenueRank,
+      companyEmployeesRank,
+    ]);
+
+    companyRevenueRank += 1;
+    companyEmployeesRank += 1;
+
+    const revenue = {
+      gte: greatRevenueCase,
+      lt: lessRevenueCase,
+    };
+    const employee = {
+      gte: greatEmployeesCase,
+      lt: lessEmployeesCase,
+    };
+
+    if (greatRevenueCase.length < 2) {
+      const rankCompanies = await Company.find({}).limit(5).sort({ revenue: -1 }).lean().exec();
+      revenue.gte = [];
+      revenue.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.revenue > company.revenue) revenue.gte.push(rankCompany);
+        if (rankCompany.revenue < company.revenue) revenue.lt.push(rankCompany);
+      });
+    } else if (lessRevenueCase.length < 2) {
+      const rankCompanies = await Company.find({}).limit(5).sort({ revenue: 1 }).lean().exec();
+      revenue.gte = [];
+      revenue.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.revenue > company.revenue) revenue.gte.push(rankCompany);
+        if (rankCompany.revenue < company.revenue) revenue.lt.push(rankCompany);
+      });
+    }
+
+    if (greatEmployeesCase.length < 2) {
+      const rankCompanies = await Company.find({}).limit(5).sort({ employees: -1 }).lean().exec();
+      employee.gte = [];
+      employee.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.employees > company.employees) employee.gte.push(rankCompany);
+        if (rankCompany.employees < company.employees) employee.lt.push(rankCompany);
+      });
+    } else if (lessEmployeesCase.length < 2) {
+      const rankCompanies = await Company.find({}).limit(5).sort({ employees: 1 }).lean().exec();
+      employee.gte = [];
+      employee.lt = [];
+
+      rankCompanies.forEach((rankCompany) => {
+        if (rankCompany.employees > company.employees) employee.gte.push(rankCompany);
+        if (rankCompany.employees < company.employees) employee.lt.push(rankCompany);
+      });
+    }
+
+    res.json({ revenue, employee, companyRevenueRank, companyEmployeesRank });
+  }),
+);
