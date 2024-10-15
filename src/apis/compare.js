@@ -9,7 +9,6 @@ export const compareRouter = express.Router();
 
 compareRouter.get(
   "/select",
-  loginChecker,
   asyncHandler(async (req, res) => {
     const { baseCompanyId, compareCompanyId, sortKeys } = req.query;
 
@@ -29,7 +28,6 @@ compareRouter.get(
 
 compareRouter.get(
   "/rank",
-  loginChecker,
   asyncHandler(async (req, res) => {
     const { id } = req.query;
     if (!id) {
