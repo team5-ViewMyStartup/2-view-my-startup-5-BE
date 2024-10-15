@@ -6,6 +6,9 @@ import { investmentsRouter } from "./apis/investments.js";
 import { signUpRouter } from "./apis/signup.js";
 import { compareRouter } from "./apis/compare.js";
 import { errorHandler } from "./utils/error-handler.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(
@@ -38,4 +41,7 @@ app.use((req, res, next) => {
   res.status(404).json({ message: "잘못된 접근입니다." });
 });
 
-app.listen(4000, () => console.log("Server Started"));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log("Server Started");
+});
