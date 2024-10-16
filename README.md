@@ -131,11 +131,11 @@ npm run dev  // 개발 서버를 실행합니다.
 <br>
 
 ## ERD
-![ERD-Image](https://raw.githubusercontent.com/team5-ViewMyStartup/2-view-my-startup-5-BE/5b8b82683afca930337a53cdbc1cfd5ba81efd1c/2-view-my-startup-6-BE.v.0.0.7.drawio.png)
+![ERD-Image](https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE/blob/dev/2-view-my-startup-6-BE.v.0.0.7.drawio.png?raw=true)
 <br>
 
 ## Architecture
-![Archi](https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE/blob/main/image.png?raw=true)
+![Archi](https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE/blob/dev/image.png?raw=true)
 <br><br>
 
 ## API Endpoints
