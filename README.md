@@ -52,7 +52,7 @@ npm run dev  // 개발 서버를 실행합니다.
 <br>
 <div align=left><h1>📚 STACKS</h1></div>
 
-**Environment**
+### Environment
 <div align=left> 
   <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white">
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
@@ -60,47 +60,47 @@ npm run dev  // 개발 서버를 실행합니다.
   <br><br>
 </div>
 
-**Security**
+### Security
 <div align=left>
   <img src="https://img.shields.io/badge/bcrypt-EFBA00?style=for-the-badge&logo=bcrypt&logoColor=white">
   <img src="https://img.shields.io/badge/JSON%20Web%20Tokens-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white">
   <br><br>
 </div>
 
-**Database**
+### Database
 <div align=left>
   <img src="https://img.shields.io/badge/mongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white">
   <img src="https://img.shields.io/badge/mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white">
   <br><br>
 </div>
 
-**Server & API**
+### Server & API
 <div align=left>
   <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
   <img src="https://img.shields.io/badge/CORS-000000?style=for-the-badge&logo=fastly&logoColor=white">
   <br><br>
 </div>
 
-**Test**
+### Test
 <div align=left>
   <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
   <br><br>
 </div>
 
-**Deployment**
+### Deployment
 <div align=left>
   <img src="https://img.shields.io/badge/Render-5D24A2?style=for-the-badge&logo=render&logoColor=white">
   <br><br>
 </div>
 
-**Congifuration**
+### Congifuration
 <div align=left>
   <img src="https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white">
   <img src="https://img.shields.io/badge/dotenv-1A4A7D?style=for-the-badge&logo=dotenv&logoColor=white">
   <br><br>
 </div>
 
-**Development Tools**
+### Development Tools
 <div align=left>
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
   <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
@@ -108,7 +108,7 @@ npm run dev  // 개발 서버를 실행합니다.
   <br><br>
 </div>
 
-**Communication & Documentation**
+### Communication & Documentation
 <div align=left>
   <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
   <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
