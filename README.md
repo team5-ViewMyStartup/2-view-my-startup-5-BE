@@ -7,7 +7,7 @@
 
 <br>
 
-## 팀원
+## Team Members
 >**본 프로젝트는 다음 팀원들에 의해 개발되었습니다:**
 - [양가현](https://github.com/gahyeon-yang)
 - [이동훈](https://github.com/ciin1411)
@@ -24,11 +24,11 @@
 이 프로젝트는 개인 투자자들이 보다 쉽게 스타트업을 평가하고 투자 결정을 내릴 수 있도록 돕기 위해 설계되었습니다.
 <br><br>
 
-## 배포 주소
+## Deployed URL
 **백엔드 서버** : https://two-view-my-startup-5-be.onrender.com
 <br><br>
 
-## 시작 가이드
+## Getting Started Guide
 >**설치 및 실행 방법**
 <pre>
 <code>
@@ -115,7 +115,7 @@ npm run dev  // 개발 서버를 실행합니다.
   <br><br>
 </div>
 
-## 기능
+## Implemented Features
 - **로그인 및 회원가입:** 사용자가 계정을 생성하고 로그인하여 서비스를 이용할 수 있습니다. 이메일 인증과 비밀번호 보안 강화를 위해 bcrypt 해시를 사용하여 비밀번호를 안전하게 저장합니다. 사용자는 로그인 후 JWT를 발급받아 인증된 사용자로서 다양한 서비스에 접근할 수 있습니다.
 ---
 - **기업 리스트:** 다양한 스타트업의 목록을 제공합니다. 사용자는 각 스타트업의 기본 정보를 한눈에 볼 수 있으며, 필요에 따라 정렬 및 필터링 기능을 통해 특정 기업을 쉽게 찾을 수 있습니다.
@@ -134,7 +134,11 @@ npm run dev  // 개발 서버를 실행합니다.
 ![ERD-Image](https://raw.githubusercontent.com/team5-ViewMyStartup/2-view-my-startup-5-BE/5b8b82683afca930337a53cdbc1cfd5ba81efd1c/2-view-my-startup-6-BE.v.0.0.7.drawio.png)
 <br>
 
-## API 엔드포인트
+## Architecture
+![Archi](https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE/blob/main/image.png?raw=true)
+<br><br>
+
+## API Endpoints
 **companies.js:** 회사의 정보를 다루는 라우터입니다.
 
 - **GET /companies**: 모든 회사의 목록을 조회합니다. 쿼리 파라미터로 정렬 방식을 받을 수 있으며, 기본 정렬 방식은 최근 등록된 순서입니다.
@@ -171,11 +175,11 @@ npm run dev  // 개발 서버를 실행합니다.
 ---
 <br>
 
-## API 명세서
+## API Documentation
 [포스트맨 링크](https://documenter.getpostman.com/view/24530900/2sAXxTbW4Y)
 <br><br>
 
-## 디렉터리 구조
+## Directory Structure
 <pre>
 <code>
 src
