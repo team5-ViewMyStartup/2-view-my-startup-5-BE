@@ -78,24 +78,43 @@ compareRouter.get(
       lessEmployeesCase,
     ]);
 
-    let companyRevenueRank = Company.countDocuments({
+    let companyGreatRevenueRank = Company.countDocuments({
       revenue: {
         $gt: company.revenue,
       },
     });
-    let companyEmployeesRank = Company.countDocuments({
+    let companyGreatEmployeesRank = Company.countDocuments({
       employees: {
         $gt: company.employees,
       },
     });
+    let companyLessRevenueRank = Company.countDocuments({
+      revenue: {
+        $lt: company.revenue,
+      },
+    });
+    let companyLessEmployeesRank = Company.countDocuments({
+      employees: {
+        $lt: company.employees,
+      },
+    });
 
-    [companyRevenueRank, companyEmployeesRank] = await Promise.all([
-      companyRevenueRank,
-      companyEmployeesRank,
+    [
+      companyGreatRevenueRank,
+      companyGreatEmployeesRank,
+      companyLessRevenueRank,
+      companyLessEmployeesRank,
+    ] = await Promise.all([
+      companyGreatRevenueRank,
+      companyGreatEmployeesRank,
+      companyLessRevenueRank,
+      companyLessEmployeesRank,
     ]);
 
-    companyRevenueRank += 1;
-    companyEmployeesRank += 1;
+    companyGreatRevenueRank += 1;
+    companyGreatEmployeesRank += 1;
+    companyLessRevenueRank += 1;
+    companyLessEmployeesRank += 1;
 
     const revenue = {
       gte: greatRevenueCase,
@@ -146,6 +165,13 @@ compareRouter.get(
       });
     }
 
-    res.json({ revenue, employee, companyRevenueRank, companyEmployeesRank });
+    res.json({
+      revenue,
+      employee,
+      companyGreatRevenueRank,
+      companyGreatEmployeesRank,
+      companyLessRevenueRank,
+      companyLessEmployeesRank,
+    });
   }),
 );
