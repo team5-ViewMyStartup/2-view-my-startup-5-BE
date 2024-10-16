@@ -1,33 +1,39 @@
-## 2-view-my-startup-5-BE
+## View My Startup
+>**프로젝트 개요 (공통)**
 
-> **코드잇 풀스택 2기 초급 프로젝트**
-> 
-> **개발기간** : 24.09.25 ~ 24.10.16
-<br>
+**View My Startup**는 개인 투자자들이 스타트업 정보를 검토하고 비교할 수 있도록 설계된 스타트업 기업 정보 및 모의 투자 서비스입니다. 이 프로젝트는 사용자가 투자 금액, 매출, 인원 수 등을 기준으로 스타트업 기업들의 정보를 쉽게 열람하고 비교할 수 있도록 돕습니다.
+<br><br>
+
+
+>**2-view-my-startup-5-BE**
+
+**코드잇 풀스택 2기 초급 프로젝트**
+
+**개발기간** : 24.09.25 ~ 24.10.16
+<br><br>
 
 ## 배포 주소
 **백엔드 서버** : https://two-view-my-startup-5-be.onrender.com
 <br><br>
 
-## View My Startup
-**프로젝트 개요 (공통)**
 
-**View My Startup**는 개인 투자자들이 스타트업 정보를 검토하고 비교할 수 있도록 설계된 스타트업 기업 정보 및 모의 투자 서비스입니다. 이 프로젝트는 사용자가 투자 금액, 매출, 인원 수 등을 기준으로 스타트업 기업들의 정보를 쉽게 열람하고 비교할 수 있도록 돕습니다.
-<br><br>
+
+## ERD
+![ERD-Image](https://raw.githubusercontent.com/team5-ViewMyStartup/2-view-my-startup-5-BE/5b8b82683afca930337a53cdbc1cfd5ba81efd1c/2-view-my-startup-6-BE.v.0.0.7.drawio.png)
 
 ## 시작 가이드
-**설치 및 실행 방법**
+>**설치 및 실행 방법**
 <pre>
 <code>
-git clone https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE.git
-cd 2-view-my-startup-5-BE
-npm install
-npm run dev
+git clone https://github.com/team5-ViewMyStartup/2-view-my-startup-5-BE.git  // 레포지토리를 클론합니다.
+cd 2-view-my-startup-5-BE  // 프로젝트 디렉토리로 이동합니다.
+npm install  // 의존성을 설치합니다.
+npm run dev  // 개발 서버를 실행합니다.
 </code>
 </pre>
 <br>
 
-## 의존성 버전 명시
+## Dependencies
 - **Node.js**: [v20.18.0](https://nodejs.org/en/)
 - **npm**: [v10.8.2](https://www.npmjs.com/)
 - **bcrypt**: [^5.1.1](https://www.npmjs.com/package/bcrypt)
@@ -104,28 +110,40 @@ npm run dev
   <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
   <br><br>
 </div>
+
+## 기능
+- **기업 리스트:** 다양한 스타트업의 목록을 제공합니다.
+- **상세 기업 조회:** 선택한 스타트업 간의 자세한 정보를 제공합니다.
+- **기업 비교:** 여러 스타트업을 비교할 수 있는 기능을 제공합니다.
+- **모의 투자:** 사용자가 가상의 투자를 진행할 수 있습니다.
+- **투자 관리:** 투자 내역을 관리하고 수정할 수 있는 기능을 제공합니다.
 <br>
+
+## API 명세서
+[포스트맨 링크](https://documenter.getpostman.com/view/24530900/2sAXxTbW4Y)
+<br><br>
 
 ## API 엔드포인트
 
-**companies.js** : 기업의 정보를 다루는 라우터입니다.
-- GET /companies/: 모든 회사 목록을 조회합니다. 쿼리 파라미터로 정렬 방식을 받을 수 있습니다.
+**companies.js:** 회사의 정보를 다루는 라우터입니다.
+- GET /companies/: 모든 회사의 목록을 조회합니다. 쿼리 파라미터로 정렬 방식을 받을 수 있습니다.
 - GET /companies/:id: 특정 회사의 세부 정보를 조회합니다. 회사 ID에 해당하는 회사가 존재하지 않을 경우 404 오류를 발생시킵니다.
 
-**compare.js** : 기업을 비교하는 기능을 제공하는 라우터입니다.
-- GET /compare/select: 기본 회사와 비교할 회사를 선택하여 정보를 가져옵니다.
+**compare.js:** 회사를 비교하는 기능을 제공하는 라우터입니다.
+- GET /compare/select: 선택한 회사와 비교할 다른 회사를 선택하여 정보를 가져옵니다.
 - GET /compare/rank: 특정 회사의 수익 및 직원 수를 기준으로 다른 회사와 비교하여 순위를 조회합니다.
 
-**investments.js** : 투자 정보를 관리하는 라우터입니다.
+**investments.js:** 투자 정보를 관리하는 라우터입니다.
 - GET /investments/:companyId: 특정 회사에 대한 투자 정보를 조회합니다.
 - POST /investments/: 새로운 투자 정보를 추가합니다. 로그인된 사용자만 접근할 수 있습니다.
 - PATCH /investments/:id: 특정 투자 정보를 수정합니다. 사용자는 자신의 투자 정보만 수정할 수 있습니다.
 - DELETE /investments/:id: 특정 투자 정보를 삭제합니다. 사용자는 자신의 투자 정보만 삭제할 수 있습니다.
   
-**signup.js** : 사용자 등록 및 로그인 기능을 처리하는 라우터입니다.
+**signup.js:** 사용자 등록 및 로그인 기능을 처리하는 라우터입니다.
 - POST /users/: 새로운 사용자 등록을 처리합니다. 이메일과 닉네임 중복 체크 및 비밀번호 해시화를 수행합니다.
 - POST /users/signIn: 사용자가 로그인할 수 있도록 인증을 처리합니다. 이메일과 비밀번호를 확인하여 JWT를 발급합니다.
 <br>
+
 
 ## 디렉터리 구조
 <pre>
@@ -160,3 +178,11 @@ main.js                         // 애플리케이션의 진입점 파일
 package-lock.json               // 의존성의 정확한 버전 정보를 기록하는 파일
 </code>
 </pre>
+<br>
+
+## 팀원 (공통)
+**본 프로젝트는 다음 팀원들에 의해 개발되었습니다:**
+- [양가현](https://github.com/gahyeon-yang)
+- [이동훈](https://github.com/ciin1411)
+- [현준배](https://github.com/junbaehyun)
+- [박효빈](https://github.com/hyobiin9)
