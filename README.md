@@ -8,11 +8,11 @@
 <br>
 
 ## 팀원
-**본 프로젝트는 다음 팀원들에 의해 개발되었습니다:**
->- [양가현](https://github.com/gahyeon-yang)
->- [이동훈](https://github.com/ciin1411)
->- [현준배](https://github.com/junbaehyun)
->- [박효빈](https://github.com/hyobiin9)
+>**본 프로젝트는 다음 팀원들에 의해 개발되었습니다:**
+- [양가현](https://github.com/gahyeon-yang)
+- [이동훈](https://github.com/ciin1411)
+- [현준배](https://github.com/junbaehyun)
+- [박효빈](https://github.com/hyobiin9)
 
 <br>
 
