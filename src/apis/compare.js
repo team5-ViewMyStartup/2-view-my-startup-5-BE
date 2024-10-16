@@ -3,13 +3,11 @@ import Company from "../models/company.schema.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { CompanyModel } from "../models/company.model.js";
 import { NotFoundError } from "../utils/error.js";
-import { loginChecker } from "../middlewares/login-checker.js";
 
 export const compareRouter = express.Router();
 
 compareRouter.get(
   "/select",
-  loginChecker,
   asyncHandler(async (req, res) => {
     const { baseCompanyId, compareCompanyId, sortKeys } = req.query;
 
@@ -29,7 +27,6 @@ compareRouter.get(
 
 compareRouter.get(
   "/rank",
-  loginChecker,
   asyncHandler(async (req, res) => {
     const { id } = req.query;
     if (!id) {

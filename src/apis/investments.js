@@ -10,6 +10,17 @@ import Company from "../models/company.schema.js";
 
 export const investmentsRouter = express.Router();
 
+const updateTotalInvestment = async (companyId) => {
+  const investments = await Investment.where({ companyId }).select({ _id: 0 }).lean().exec();
+  const totalInvestmentAmount = investments.reduce((sum, investment) => sum + investment.amount, 0);
+
+  await Company.findOneAndUpdate(
+    { id: companyId },
+    { startupTotal: totalInvestmentAmount },
+    { new: true },
+  );
+};
+
 investmentsRouter.get(
   "/:companyId",
   asyncHandler(async (req, res) => {
@@ -20,7 +31,15 @@ investmentsRouter.get(
     if (!investments?.length) {
       throw new NotFoundError("기업에 투자한 정보가 없습니다.");
     }
-    res.json(investments);
+
+    const totalInvestmentAmount = investments.reduce(
+      (sum, investment) => sum + investment.amount,
+      0,
+    );
+
+    const company = await Company.findOne({ id: companyId }).select("startupTotal").lean();
+
+    res.json({ investments, totalInvestmentAmount, startupTotal: company.startupTotal });
   }),
 );
 
@@ -47,8 +66,8 @@ investmentsRouter.patch(
     if (investment.investorName !== user.nickname) {
       throw new UnauthorizedError("본인이 투자한 정보만 수정할 수 있습니다.");
     }
-
     const updateInvestment = await Investment.findOneAndUpdate({ id }, { comment }, { new: true });
+    await updateTotalInvestment(investment.companyId);
 
     res.status(200).json(updateInvestment);
   }),
@@ -80,6 +99,8 @@ investmentsRouter.delete(
 
     await Investment.findOneAndDelete({ id });
 
+    await updateTotalInvestment(investment.companyId);
+
     res.status(200).json({ message: "투자 정보가 삭제되었습니다." });
   }),
 );
@@ -110,6 +131,8 @@ investmentsRouter.post(
       userId: user.id,
       id: crypto.randomUUID(),
     }).save();
+
+    await updateTotalInvestment(companyId);
 
     res.status(201).json(newInvestment);
   }),
